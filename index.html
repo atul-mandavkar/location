@@ -1,0 +1,24 @@
+<html>
+  <input type="button" value="Show Location" onclick="javascript:showlocation ()" />
+  <br/>
+  Latitude: <span id="latitude"></span>
+  <br/>
+  Longitude: <span id="longitude"></span>
+</html>
+
+<script>
+  function showlocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+  }
+
+  function showPosition(position) {
+    var latitude = document.getElementById("latitude");
+    var longitude = document.getElementById("longitude");
+    latitude.innerHTML = position.coords.latitude;
+    longitude.innerHTML = position.coords.longitude;
+  }
+</script>
