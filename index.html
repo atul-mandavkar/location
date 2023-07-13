@@ -58,8 +58,17 @@
         Http.send();
         Http.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-                result.innerHTML = "In Human readable form:<br>" + this.responseText;
-                //console.log(this.responseText);
+                let obj = JSON.parse(this.responseText);
+                let latitude = obj.latitude;
+                let longitude = obj.longitude;
+                let continent = obj. continent;
+                let address1 = "";
+                for (let i in Object.keys(obj.localityInfo.administrative)){
+                  address1 = address1 + "\n" + obj.localityInfo.administrative[i].name;
+                }
+                result.innerHTML = "In Human readable form:<br>Latitude: " + latitude + "<br>Longitude: " + longitude + "<br>" + continent + address1;
+                
+                console.log(this.responseText);
             }
         };
     }
