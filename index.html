@@ -44,7 +44,7 @@
                     + "&longitude=" + position.coords.longitude
                     + "&localityLanguage=en";
                 getApi(bdcApi);
-
+                document.getElementById("demo").innerHTML = "In coordinates<br>Latitude: " + position.coords.latitude + " Longitude: " + position.coords.longitude;
             },
             (err) => { getApi(bdcApi); },
             {
@@ -58,8 +58,8 @@
         Http.send();
         Http.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-                result.innerHTML = this.responseText;
-                console.log(this.responseText.le);
+                result.innerHTML = "In Human readable form:<br>" + this.responseText;
+                //console.log(this.responseText);
             }
         };
     }
