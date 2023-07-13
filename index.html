@@ -7,29 +7,65 @@
 <body>
   <h2>Your location is :</h2>
   <h2 id="demo"></h2>
+  <pre id="json-result"></pre>
 
-  <script>
-   const options = {
-  enableHighAccuracy: true,
-  timeout: 5000,
-  maximumAge: 0,
-};
+  <script>/*
+    const successCallback = (position) => {
+      console.log(position);
+      document.getElementById("demo").innerHTML = "Latitude: " + position.coords.latitude + " Longitude: " + position.coords.longitude;
+      console.log()
+    };
 
-function success(pos) {
-  const crd = pos.coords;
+    const errorCallback = (error) => {
+      console.log(error);
+    };
 
-  console.log("Your current position is:");
-  console.log(`Latitude : ${crd.latitude}`);
-  console.log(`Longitude: ${crd.longitude}`);
-  console.log(`More or less ${crd.accuracy} meters.`);
-}
+    const options = {
+      enableHighAccuracy: true,
+      timeout: 10000,
+    };
+    if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(successCallback, errorCallback, options);
+    }
+    else{
+      alert("Your browser does not support Geolocation");
+    }*/
 
-function error(err) {
-  console.warn(`ERROR(${err.code}): ${err.message}`);
-}
+    var result = document.getElementById("json-result");
+    const Http = new XMLHttpRequest();
+    function getLocation() {
+        console.log("getLocation Called");
+        var bdcApi = "https://api.bigdatacloud.net/data/reverse-geocode-client"
 
-navigator.geolocation.getCurrentPosition(success, error, options);
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                bdcApi = bdcApi
+                    + "?latitude=" + position.coords.latitude
+                    + "&longitude=" + position.coords.longitude
+                    + "&localityLanguage=en";
+                getApi(bdcApi);
 
+            },
+            (err) => { getApi(bdcApi); },
+            {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0
+            });
+    }
+    function getApi(bdcApi) {
+        Http.open("GET", bdcApi);
+        Http.send();
+        Http.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                result.innerHTML = this.responseText;
+                console.log(this.responseText.le);
+            }
+        };
+    }
+
+
+    getLocation();
   </script>
 </body>
 </html>
